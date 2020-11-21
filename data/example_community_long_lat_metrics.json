@@ -5,7 +5,7 @@
     "regionCode": "NY",
     "country": "United States of America",
     "country_code": "US",
-    "location": [40.712776, -74.005974],
+    "location": [-74.005974, 40.712776],
     "bot_usage_count": 56
   },
   {
@@ -14,7 +14,7 @@
     "regionCode": "WA",
     "country": "United States of America",
     "country_code": "US",
-    "location": [47.606209, -122.332069],
+    "location": [-122.332069, 47.606209],
     "bot_usage_count": 22
   },
   {
@@ -23,7 +23,7 @@
     "regionCode": "ON",
     "country": "Canada",
     "country_code": "CA",
-    "location": [43.653225, -79.383186],
+    "location": [-79.383186, 43.653225],
     "bot_usage_count": 35
   },
   {
@@ -32,7 +32,7 @@
     "regionCode": "",
     "country": "Nigeria",
     "country_code": "NG",
-    "location": [6.524379, 3.379206],
+    "location": [3.379206, 6.524379],
     "bot_usage_count": 30
   },
   {
@@ -41,7 +41,7 @@
     "regionCode": "OR",
     "country": "United States of America",
     "country_code": "US",
-    "location": [45.51223, -122.658722],
+    "location": [-122.658722, 45.51223],
     "bot_usage_count": 40
   },
   {
@@ -50,7 +50,7 @@
     "regionCode": "CA",
     "country": "United States of America",
     "country_code": "US",
-    "location": [37.804363, -122.271111],
+    "location": [-122.271111, 37.804363],
     "bot_usage_count": 12
   },
   {
@@ -59,7 +59,7 @@
     "regionCode": "VA",
     "country": "United States of America",
     "country_code": "US",
-    "location": [36.768208, -76.287491],
+    "location": [-76.287491, 36.768208],
     "bot_usage_count": 26
   },
   {
@@ -68,7 +68,7 @@
     "regionCode": "FL",
     "country": "United States of America",
     "country_code": "US",
-    "location": [30.332184, -81.655647],
+    "location": [-81.655647, 30.332184],
     "bot_usage_count": 5
   },
   {
@@ -77,7 +77,7 @@
     "regionCode": "OH",
     "country": "United States of America",
     "country_code": "US",
-    "location": [41.081444, -81.519005],
+    "location": [-81.519005, 41.081444],
     "bot_usage_count": 38
   },
   {
@@ -86,7 +86,7 @@
     "regionCode": "GA",
     "country": "United States of America",
     "country_code": "US",
-    "location": [33.748997, -84.387985],
+    "location": [-84.387985, 33.748997],
     "bot_usage_count": 32
   }
 ]
