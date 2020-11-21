@@ -25,7 +25,7 @@ module.exports = {
     removeDeprecatedGapUtilities: true,
     purgeLayersByDefault: true,
   },
-  corePlugins: {
-    preflight: false,
-  },
+  // corePlugins: {
+  //   preflight: false,
+  // },
 };
