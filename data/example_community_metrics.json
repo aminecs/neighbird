@@ -1,0 +1,82 @@
+[
+  {
+    "city": "New York City",
+    "region": "New York",
+    "regionCode": "NY",
+    "country": "United States of America",
+    "country_code": "US",
+    "bot_usage_count": 56
+  },
+  {
+    "city": "Seattle ",
+    "region": "Washington",
+    "regionCode": "WA",
+    "country": "United States of America",
+    "country_code": "US",
+    "bot_usage_count": 22
+  },
+  {
+    "city": "Toronto",
+    "region": "Ontario",
+    "regionCode": "ON",
+    "country": "Canada",
+    "country_code": "CA",
+    "bot_usage_count": 35
+  },
+  {
+    "city": "Lagos",
+    "region": "Lagos",
+    "regionCode": "",
+    "country": "Nigeria",
+    "country_code": "NG",
+    "bot_usage_count": 30
+  },
+  {
+    "city": "Portland",
+    "region": "Oregon",
+    "regionCode": "OR",
+    "country": "United States of America",
+    "country_code": "US",
+    "bot_usage_count": 40
+  },
+  {
+    "city": "Oakland",
+    "region": "California",
+    "regionCode": "CA",
+    "country": "United States of America",
+    "country_code": "US",
+    "bot_usage_count": 12
+  },
+  {
+    "city": "Chesapeake",
+    "region": "Virginia",
+    "regionCode": "VA",
+    "country": "United States of America",
+    "country_code": "US",
+    "bot_usage_count": 26
+  },
+  {
+    "city": "Jacksonville",
+    "region": "Florida",
+    "regionCode": "FL",
+    "country": "United States of America",
+    "country_code": "US",
+    "bot_usage_count": 5
+  },
+  {
+    "city": "Akron",
+    "region": "Ohio",
+    "regionCode": "OH",
+    "country": "United States of America",
+    "country_code": "US",
+    "bot_usage_count": 38
+  },
+  {
+    "city": "Atlanta",
+    "region": "Georgia",
+    "regionCode": "GA",
+    "country": "United States of America",
+    "country_code": "US",
+    "bot_usage_count": 32
+  }
+]

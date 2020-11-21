@@ -1,0 +1,42 @@
+[
+  {
+    "city": "apples",
+    "bot_usage_count": 23
+  },
+  {
+    "city": "#covid19",
+    "bot_usage_count": 300
+  },
+  {
+    "city": "#BLM",
+    "bot_usage_count": 400
+  },
+  {
+    "city": "pugs",
+    "bot_usage_count": 222
+  },
+  {
+    "city": "dinner ideas",
+    "bot_usage_count": 124
+  },
+  {
+    "city": "meet neighbors",
+    "bot_usage_count": 166
+  },
+  {
+    "city": "carpool",
+    "bot_usage_count": 250
+  },
+  {
+    "city": "cats",
+    "bot_usage_count": 222
+  },
+  {
+    "city": "New York",
+    "bot_usage_count": 87
+  },
+  {
+    "city": "hiking",
+    "bot_usage_count": 34
+  }
+]
