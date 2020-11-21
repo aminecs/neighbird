@@ -6,7 +6,18 @@ consumer_secret = os.environ.get('SECRET_KEY')
 
 
 def authentication(consumer_key, consumer_secret):
-    return tweepy.AppAuthHandler(consumer_key, consumer_secret)
+    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+
+    # Redirect user to Twitter to authorize
+    try:
+        redirect_url = auth.get_authorization_url()
+    except tweepy.TweepError:
+        print('Error! Failed to get request token.')
+    print(redirect_url)
+    verifier = input("Please input the verifier: ")
+
+    auth.get_access_token(verifier)
+    return auth
 
 
 # OAuth2 test method
@@ -20,11 +31,10 @@ def getTweets(api):
         print(tweet.text)
 
 
-
 def main():
     auth = authentication(consumer_key, consumer_secret)
     api = tweepy.API(auth)
-    getTweets(api)
+    print(api.list_direct_messages(auth))
 
 
 main()
