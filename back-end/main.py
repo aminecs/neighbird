@@ -1,10 +1,10 @@
-import configure, stream_events
+import stream_events #, configure
 import bot_behaviour_init, config
 
 
 def setUpStreamingAPI():
     stream_events
-    configure
+    # configure
 
 
 def setUpBot():
