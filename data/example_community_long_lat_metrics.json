@@ -1,0 +1,92 @@
+[
+  {
+    "city": "New York City",
+    "region": "New York",
+    "regionCode": "NY",
+    "country": "United States of America",
+    "country_code": "US",
+    "location": [40.712776, -74.005974],
+    "bot_usage_count": 56
+  },
+  {
+    "city": "Seattle ",
+    "region": "Washington",
+    "regionCode": "WA",
+    "country": "United States of America",
+    "country_code": "US",
+    "location": [47.606209, -122.332069],
+    "bot_usage_count": 22
+  },
+  {
+    "city": "Toronto",
+    "region": "Ontario",
+    "regionCode": "ON",
+    "country": "Canada",
+    "country_code": "CA",
+    "location": [43.653225, -79.383186],
+    "bot_usage_count": 35
+  },
+  {
+    "city": "Lagos",
+    "region": "Lagos",
+    "regionCode": "",
+    "country": "Nigeria",
+    "country_code": "NG",
+    "location": [6.524379, 3.379206],
+    "bot_usage_count": 30
+  },
+  {
+    "city": "Portland",
+    "region": "Oregon",
+    "regionCode": "OR",
+    "country": "United States of America",
+    "country_code": "US",
+    "location": [45.51223, -122.658722],
+    "bot_usage_count": 40
+  },
+  {
+    "city": "Oakland",
+    "region": "California",
+    "regionCode": "CA",
+    "country": "United States of America",
+    "country_code": "US",
+    "location": [37.804363, -122.271111],
+    "bot_usage_count": 12
+  },
+  {
+    "city": "Chesapeake",
+    "region": "Virginia",
+    "regionCode": "VA",
+    "country": "United States of America",
+    "country_code": "US",
+    "location": [36.768208, -76.287491],
+    "bot_usage_count": 26
+  },
+  {
+    "city": "Jacksonville",
+    "region": "Florida",
+    "regionCode": "FL",
+    "country": "United States of America",
+    "country_code": "US",
+    "location": [30.332184, -81.655647],
+    "bot_usage_count": 5
+  },
+  {
+    "city": "Akron",
+    "region": "Ohio",
+    "regionCode": "OH",
+    "country": "United States of America",
+    "country_code": "US",
+    "location": [41.081444, -81.519005],
+    "bot_usage_count": 38
+  },
+  {
+    "city": "Atlanta",
+    "region": "Georgia",
+    "regionCode": "GA",
+    "country": "United States of America",
+    "country_code": "US",
+    "location": [33.748997, -84.387985],
+    "bot_usage_count": 32
+  }
+]
