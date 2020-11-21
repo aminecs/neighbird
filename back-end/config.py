@@ -7,14 +7,16 @@ consumer_secret = os.environ.get('SECRET_KEY')
 access_token = os.environ.get('ACCESS_TOKEN')
 access_token_secret = os.environ.get('ACCESS_TOKEN_SECRET')
 
+
 # Barebone setup
-def setupAuth():
+def setUpAuth():
     oauth = OAuth1Session(consumer_key,
                           client_secret=consumer_secret,
                           resource_owner_key=access_token,
                           resource_owner_secret=access_token_secret)
 
     return oauth
+
 
 # Tweepy setup
 def get_api():

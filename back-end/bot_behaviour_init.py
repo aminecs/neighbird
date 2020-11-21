@@ -18,7 +18,7 @@ def createWelcomeMessage(oauth, new_welcome_message):
                                               },
                                               {
                                                   "label": "Topics",
-                                                  "description": "Match with a fellow bird to chat",
+                                                  "description": "Match with a fellow bird to chat about a topic",
                                                   "metadata": "external_id_2"
                                               }
                                           ]
@@ -47,3 +47,10 @@ def deleteWelcomeMessageRule(oauth, rule_id):
 
 def getWelcomeMessageRules(oauth):
     return oauth.get("https://api.twitter.com/1.1/direct_messages/welcome_messages/rules/list.json")
+
+
+def updateWelcomeMessage(oauth, new_welcome_message):
+    prev_rule_id = getWelcomeMessageRules(config.setUpAuth()).json()["welcome_message_rules"][0]["id"]
+    deleteWelcomeMessageRule(oauth, prev_rule_id)
+    new_rule_id = createWelcomeMessage(oauth, new_welcome_message).json()["welcome_message"]['id']
+    setWelcomeMessage(oauth, new_rule_id)
