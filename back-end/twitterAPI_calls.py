@@ -13,6 +13,11 @@ def getTweets(api):
         print(tweet.text)
 
 
+def sendDM(recipient_id, msg):
+    api = config.get_api()
+    return api.send_direct_message(recipient_id, msg)
+
+
 def main():
     api = config.get_api()
     print(api.list_direct_messages())

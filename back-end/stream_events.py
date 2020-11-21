@@ -9,7 +9,7 @@ class StreamEvent(Event):
         event_type = list(data.keys())[1]
         if "direct_message_events" == event_type:
             if data["direct_message_events"][0]["message_create"]["sender_id"] != '1328476914600833025':
-                bot_interaction.processMessage(data["direct_message_events"][0]["message_create"]["message_data"]['text'])
+                bot_interaction.processData(data)
 
 
 stream_events = StreamEvent()
