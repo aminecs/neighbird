@@ -1,42 +1,42 @@
 [
   {
-    "city": "apples",
+    "topic": "apples",
     "bot_usage_count": 23
   },
   {
-    "city": "#covid19",
+    "topic": "#covid19",
     "bot_usage_count": 300
   },
   {
-    "city": "#BLM",
+    "topic": "#BLM",
     "bot_usage_count": 400
   },
   {
-    "city": "pugs",
+    "topic": "pugs",
     "bot_usage_count": 222
   },
   {
-    "city": "dinner ideas",
+    "topic": "dinner ideas",
     "bot_usage_count": 124
   },
   {
-    "city": "meet neighbors",
+    "topic": "meet neighbors",
     "bot_usage_count": 166
   },
   {
-    "city": "carpool",
+    "topic": "carpool",
     "bot_usage_count": 250
   },
   {
-    "city": "cats",
+    "topic": "cats",
     "bot_usage_count": 222
   },
   {
-    "city": "New York",
+    "topic": "New York",
     "bot_usage_count": 87
   },
   {
-    "city": "hiking",
+    "topic": "hiking",
     "bot_usage_count": 34
   }
 ]
