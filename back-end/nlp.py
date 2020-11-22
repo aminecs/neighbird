@@ -2,7 +2,7 @@
 from google.cloud import language_v1
 import spacy
 
-SIMILARITY_THRESHOLD = 0.7
+ENTITIES_WEIGHT = 0.8
 
 
 class NLPAnalyzer:
@@ -20,10 +20,26 @@ class NLPAnalyzer:
 
     def sort_by_cosine_similarity(self, target_inquiry, other_inquiries):
         target_doc = self.__spacy_nlp(target_inquiry.inquiry_str)
+        if len(target_inquiry.entities) > 0:
+            target_entities = " ".join([entity['entity'] for entity in target_inquiry.entities])
+            target_entities_doc = self.__spacy_nlp(target_entities)
 
         sorted_inquiries = []
         for inquiry in other_inquiries:
-            sorted_inquiries.append((inquiry, target_doc.similarity(self.__spacy_nlp(inquiry.inquiry_str))))
+            entities_weight = ENTITIES_WEIGHT
+            sentence_weight = 1 - entities_weight
+
+            other_doc = self.__spacy_nlp(inquiry.inquiry_str)
+            sentence_similarity = target_doc.similarity(other_doc) * sentence_weight
+
+            entities_similarity = 0
+            if len(inquiry.entities) > 0 and len(target_inquiry.entities) > 0:
+                other_entities = " ".join([entity['entity'] for entity in inquiry.entities])
+                other_entities_doc = self.__spacy_nlp(other_entities)
+                entities_similarity = target_entities_doc.similarity(other_entities_doc) * entities_weight
+
+            similarity = entities_similarity + sentence_similarity
+            sorted_inquiries.append((inquiry, similarity))
 
         sorted_inquiries = sorted(sorted_inquiries, key=lambda inquiry_tuple: inquiry_tuple[1], reverse=True)
         return sorted_inquiries
@@ -39,12 +55,29 @@ class NLPAnalyzer:
         return sorted_inquiries
 
     def sort_by_cosine_and_sentiment_similarity(self, target_inquiry, other_inquiries):
-        target_score = self._sentiment_score(target_inquiry.entities)
         target_doc = self.__spacy_nlp(target_inquiry.inquiry_str)
+        if len(target_inquiry.entities) > 0:
+            target_entities = " ".join([entity['entity'] for entity in target_inquiry.entities])
+            target_entities_doc = self.__spacy_nlp(target_entities)
+
+        target_score = self._sentiment_score(target_inquiry.entities)
 
         sorted_inquiries = []
         for inquiry in other_inquiries:
-            similarity = target_doc.similarity(self.__spacy_nlp(inquiry.inquiry_str))
+            entities_weight = ENTITIES_WEIGHT
+            sentence_weight = 1 - entities_weight
+
+            other_doc = self.__spacy_nlp(inquiry.inquiry_str)
+            sentence_similarity = target_doc.similarity(other_doc) * sentence_weight
+
+            entities_similarity = 0
+            if len(inquiry.entities) > 0 and len(target_inquiry.entities) > 0:
+                other_entities = " ".join([entity['entity'] for entity in inquiry.entities])
+                other_entities_doc = self.__spacy_nlp(other_entities)
+                entities_similarity = target_entities_doc.similarity(other_entities_doc) * entities_weight
+
+            similarity = entities_similarity + sentence_similarity
+
             sentiment = self._sentiment_score(inquiry.entities)
             sorted_inquiries.append((inquiry, abs(abs(1 * target_score) - abs(similarity * sentiment))))
 
@@ -96,9 +129,13 @@ if __name__ == "__main__":
 
     analyzer = NLPAnalyzer.get_instance()
 
-    target_inquiry = 'basketball game last night'
-    other_inquiries = ['i loved the basketball game yesterday', 'i hated the basketball game yesterday',
-                       'the basketball game yesterday', 'i did not watch the basketball game yesterday',
+    # target_inquiry = 'basketball game last night'
+    # other_inquiries = ['i loved the basketball game yesterday', 'i hated the basketball game yesterday',
+    #                    'the basketball game yesterday', 'i liked yesterday\'s raptors game',
+    #                    'i liked cooking last night']
+    target_inquiry = 'i like birds'
+    other_inquiries = ['i like parrots', 'i like pugs',
+                       'dogs', 'my eagle',
                        'i liked cooking last night']
 
     target_inquiry = Inquiry(None, 1, target_inquiry)
