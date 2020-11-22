@@ -57,7 +57,7 @@ def processMessage(msg_received, recipient_user, new_user, inquiry, oauth):  # T
         recipient_id = recipient_user.user_id
         recipient_handle = oauth.get(f"https://api.twitter.com/1.1/users/show.json?user_id={recipient_id}").json()["screen_name"]
         handle_close = oauth.get(f"https://api.twitter.com/1.1/users/show.json?user_id={close_user}").json()["screen_name"]
-        dm_methods.send_DM(close_user, f"Hi, we find someone who wants to chat {recipient_handle}")
+        dm_methods.send_DM(close_user, f"Hi, we find someone who wants to chat @{recipient_handle}")
         return f"Nice we found a match @{handle_close}", []
     if msg_received == "later":
         recipient_user.addInquiry(inquiry)
