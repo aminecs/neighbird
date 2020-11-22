@@ -2,6 +2,7 @@ from location import GeoLocator
 import inquiry
 from geolocation import getLocationInfo
 
+
 class User:
     def __init__(self, user_id):
         self.user_id = user_id  # (str) user id of Twitter user
@@ -16,18 +17,23 @@ class User:
         self.location_info = getLocationInfo(address)
         return self.location_info
 
+    def set_last_msg(self, last_msg):
+        self.last_msg = last_msg
+        return self.last_msg
+
 
 if __name__ == '__main__':
     user = User('test')
-    print(user.set_address('60 Ridge Road, Nashua, NH'))  # US address
-    print(user.set_address('100 Harbour St, Toronto, Ontario'))  # Canada address
-    print(user.set_address('15 Residence Road, Gbagada Phase 2, Lagos, Nigeria'))  # Nigeria address
-    print(user.set_address('Palm Dr, Lekki Penninsula 2, Lagos, Nigeria'))  # Nigeria address
-    print(user.set_address('12 Woodlands Drive, Woodlands, Glasgow G4 9EH'))  # Glasgow address
+    # print(user.set_address('60 Ridge Road, Nashua, NH'))  # US address
+    # print(user.set_address('100 Harbour St, Toronto, Ontario'))  # Canada address
+    # print(user.set_address('15 Residence Road, Gbagada Phase 2, Lagos, Nigeria'))  # Nigeria address
+    # print(user.set_address('Palm Dr, Lekki Penninsula 2, Lagos, Nigeria'))  # Nigeria address
+    # print(user.set_address('12 Woodlands Drive, Woodlands, Glasgow G4 9EH'))  # Glasgow address
     print(user.set_address('10 Park Rd, Glasgow G4 9JG'))  # Glasgow address
+    print(user.location_info["data"]["city"])
 
     # Nominatim API can get location data for larger regions of Nigeria but not street addresses
-    print(user.set_address('Lagos, Nigeria'))
+    # print(user.set_address('Lagos, Nigeria'))
 
     inquiry = inquiry.Inquiry(user=user, inquiry_type=inquiry.InquiryType.chat,
                               inquiry_str='i want to talk about apples')

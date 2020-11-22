@@ -1,4 +1,4 @@
-import dm_methods
+import dm_methods, user
 
 """"
     Defining the both answers to specific messages
@@ -6,19 +6,13 @@ import dm_methods
 """
 
 
-def processMessage(msg_received):  # TODO Add param: user, new_user
+def processMessage(msg_received, recipient_user):  # TODO Add param: user, new_user
     msg_received = msg_received.lower()
-    user = "123"
-    # user.help = True
-    # user.city = "Glasgow"
-    # user.country = "Scotland"
     new_user = True
-    user_help = True
-    user_prev_msg = "engage"
     # Community bit
     if msg_received == "community":
         if new_user:  # New user welcome message for community
-            return "Community is a place where you can connect with other Tweeters in your neighbourhood." \
+            return "Community is a place where you can connect with other Tweeters in your neighbourhood. " \
                    "Since it’s your first time here, we’ll need you to share your address ", address_options
         else:
             return "Welcome back ! Community is a place where you can connect with other Tweeters in your" \
@@ -27,12 +21,8 @@ def processMessage(msg_received):  # TODO Add param: user, new_user
         return "Security and trust is at the forefront of what we do here at Twitter. We need to verify that you’re a " \
                "real user to ensure that we keep the community a safe space for everyone. Your personal details or " \
                "address will not be shared with anyone. Do you want to continue?", security_options
-    if msg_received == "share my address":
-        # location = user.city + ", " + user.country  # TO DO: GET CITY OF THE USER
-        location = "Glasgow" + ", " + "Scotland"
-        return f"Thanks for verifying your address, looks like you are located in {location}. Would you like to " \
-               "'chat' with someone from your area, 'engage in an activity' (ie. football, tennis, scrabble) or " \
-               "'request help' (ie. toilet paper, grocery shopping, help with homework) ?", community_options
+    if msg_received == "share address":
+        return "Please enter your address", []
     if msg_received == "abort":
         return "We are sorry to see you go. We wish you the best and I appreciate the time you spent with us.", []
     if msg_received == "chat":
@@ -40,7 +30,7 @@ def processMessage(msg_received):  # TODO Add param: user, new_user
     if msg_received == "engage":
         return "What activity would you like to engage in?", []
     if msg_received == "community help":
-        if not user_help: #TODO user.help:
+        if not recipient_user.available_to_help:
             return "The greatness of a Community is most accurately measured by the compassionate actions " \
                    "of its members. Will you also opt in to respond to community requests?", opt_in_options
         else:
@@ -61,11 +51,20 @@ def processMessage(msg_received):  # TODO Add param: user, new_user
     # Edge cases
     if msg_received == "hi":
         return "hi", []
-    else: #TODO Replace user_prev_msg to user.prev_msg
-        if user_prev_msg == "engage":
+    else:
+        if recipient_user.last_msg == "engage":
             return f"Sounds good, we will try to find someone who wants to engage in this activity ({msg_received}).", []
-        if user_prev_msg == "submit a topic":
+        if recipient_user.last_msg == "submit a topic":
             return f"Hang tight, we’re searching for other birds interested in {msg_received}…", []
+        if recipient_user.last_msg == "share address":
+            recipient_user.set_address(msg_received)
+            location = recipient_user.location_info["data"]["city"] + ", " + recipient_user.location_info["data"][
+                "country"]
+            return f"Thanks for verifying your address, looks like you are located in {location}. Would you like to " \
+                   "'chat' with someone from your area, 'engage in an activity' (ie. football, tennis, scrabble) or " \
+                   "'request help' (ie. toilet paper, grocery shopping, help with homework) ?", community_options
+        print(recipient_user.last_msg)
+        print(msg_received)
         return "I am clueless here. The dream team is working on it.", []
 
 
@@ -82,11 +81,11 @@ def getSender(data):
     return data["direct_message_events"][0]["message_create"]["sender_id"]
 
 
-def processData(data):
+def processData(data, recipient_user):
     msg_received = getMessageReceived(data)
     recipient_id = getSender(data)
-
-    answer, options = processMessage(msg_received)
+    answer, options = processMessage(msg_received, recipient_user)
+    recipient_user.set_last_msg(msg_received.lower())
     if answer == "hi":
         dm_methods.send_WelcomeDM(recipient_id)
     else:

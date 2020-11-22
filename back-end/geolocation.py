@@ -49,9 +49,10 @@ def getLocationInfo(location_str):
             ret["error"] = "Location not found"
         else:
             #API RETURNS [LNG, LAT]
-            ret["data"]= {
+            #print("Here: \n", locations[0]["context"])
+            ret["data"] = {
                 "formatted_address": locations[0]["place_name"],
-                "city": locations[0]["context"][-2]["text"],
+                "city": locations[0]["context"][1]["text"],
                 "country": locations[0]["context"][-1]["text"],
                 "lng": locations[0]["geometry"]["coordinates"][0],
                 "lat": locations[0]["geometry"]["coordinates"][1],
