@@ -112,7 +112,8 @@ def processMessage(msg_received, recipient_user, new_user, inquiry, oauth):  # T
                    "'request help' (ie. toilet paper, grocery shopping, help with homework) ?", community_options
         print(recipient_user.last_msg)
         print(msg_received)
-        return "I am clueless here. The dream team is working on it.", []
+        return "Hi, I’m Bird Bot. I am here to help you connect and start a conversation with other fellow Tweeters. " \
+               "You can start by selecting either ‘Community’ or ‘Topics'", main_options
 
 
 def isNewUser(recipient_user):
@@ -197,6 +198,19 @@ community_options = [
         "label": "Join the community",
         "description": "I would like to join the community",
         "metadata": "external_id_4"
+    }
+]
+
+main_options = [
+    {
+        "label": "Community",
+        "description": "Connect with your community",
+        "metadata": "external_id_1"
+    },
+    {
+        "label": "Topics",
+        "description": "Match with a fellow bird to chat about a topic",
+        "metadata": "external_id_2"
     }
 ]
 
