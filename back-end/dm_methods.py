@@ -1,4 +1,4 @@
-import config
+import config, bot_behaviour_init
 
 
 def sendQR_DM(recipient_id, msg, options):
@@ -28,3 +28,13 @@ def send_DM(recipient_id, msg):
                                       }
                             }
                       )
+
+
+def send_WelcomeDM(recipient_id):
+    oauth = config.setUpAuth()
+    print(bot_behaviour_init.getWelcomeMessage(oauth).json())
+    message_data = bot_behaviour_init.getWelcomeMessage(oauth).json()["welcome_message"]["message_data"]
+    return oauth.post("https://api.twitter.com/1.1/direct_messages/events/new.json",
+                      json={"event": {"type": "message_create",
+                                      "message_create": {"target": {"recipient_id": f"{recipient_id}"},
+                                                         "message_data": message_data}}})

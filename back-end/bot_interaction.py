@@ -14,6 +14,8 @@ def processMessage(msg_received):  # TODO Add param: user, new_user
     # user.country = "Scotland"
     new_user = True
     user_help = True
+    prev_msg = "engage"
+    # Community bit
     if msg_received == "community":
         if new_user:  # New user welcome message for community
             return "Community is a place where you can connect with other Tweeters in your neighbourhood." \
@@ -31,6 +33,10 @@ def processMessage(msg_received):  # TODO Add param: user, new_user
         return f"Thanks for verifying your address, looks like you are located in {location}. Would you like to " \
                "'chat' with someone from your area, 'engage in an activity' (ie. football, tennis, scrabble) or " \
                "'request help' (ie. toilet paper, grocery shopping, help with homework) ?", community_options
+    if msg_received == "chat":
+        return "Hang tight, we’re searching for other birds to chat with...", []
+    if msg_received == "engage":
+        return "What activity would you like to engage in?", []
     if msg_received == "community help":
         if not user_help: #TODO user.help:
             return "The greatness of a Community is most accurately measured by the compassionate actions " \
@@ -43,13 +49,19 @@ def processMessage(msg_received):  # TODO Add param: user, new_user
         return "Hang tight, we’re searching for other birds with the same criteria…", []
     if msg_received == "later":
         return "All right, we will get back to you soon.", []
+    # Topics bit
     if msg_received == "topics":
         return "Topics is the space where we can match you with a fellow Tweeter to chat about a specific topic", topic_options
     if msg_received == "submit a topic":
         return "What topic are you interested in?", []
     if msg_received == "trending topics":
         return "The trending topics are: " + ', '.join(getTrendingTopics()), trending_topics_options
+    # Edge cases
+    if msg_received == "hi":
+        return "hi", []
     else:
+        if prev_msg == "engage":
+            return "Sounds good, we will try to find someone who wants to engage in this activity."
         return "I am clueless here. The dream team is working on it.", []
 
 
@@ -71,10 +83,13 @@ def processData(data):
     recipient_id = getSender(data)
 
     answer, options = processMessage(msg_received)
-    if not options:
-        dm_methods.send_DM(recipient_id, answer)
+    if answer == "hi":
+        dm_methods.send_WelcomeDM(recipient_id)
     else:
-        dm_methods.sendQR_DM(recipient_id, answer, options)
+        if not options:
+            dm_methods.send_DM(recipient_id, answer)
+        else:
+            dm_methods.sendQR_DM(recipient_id, answer, options)
 
 
 address_options = [
