@@ -171,9 +171,13 @@ const Home = () => {
               </ZoomableGroup>
             </ComposableMap>
           </div>
-          <div className="absolute right-0 top-0 mr-5 mt-5 w-72">
+          <div
+            className={`absolute right-0 top-0 mr-5 mt-5 ${
+              !communityDetails && !showHotTopics ? 'w-12' : 'w-72'
+            }`}
+          >
             <div
-              className={`w-full border-2 border-white rounded mb-5 ${!communityDetails && 'w-16'}`}
+              className={`w-full border-2 border-white rounded mb-5 ${!showHotTopics && 'w-16'}`}
             >
               <div
                 className={`flex justify-between items-center py-4 border-b px-3 text-primaryColor ${
@@ -317,14 +321,14 @@ const Home = () => {
         </div>
       </div>
       <div
-        className="flex flex-col items-center justify-center w-full h-screen overflow-hidden relative"
+        className="flex flex-col items-center justify-center tablet:my-auto tablet:overflow-y-auto tablet:justify-start w-full h-screen overflow-hidden relative"
         id="team"
       >
         <div className="w-full flex flex-col items-center justify-center max-w-7xl">
-          <div className="flex px-5 py-2 mb-20 w-full items-center">
+          <div className="flex px-5 py-2 mb-20 w-full items-center flex-wrap">
             <Logo className="w-56 h-56 mb-12" />
-            <div className="flex flex-col ml-5">
-              <p className="text-white font-bold text-8xl">The Neighbird</p>
+            <div className="flex flex-col ml-5 tablet:ml-0">
+              <p className="text-white font-bold text-8xl phone:text-7xl">The Neighbird</p>
               &nbsp;&nbsp;
               <a
                 href="https://twitter.com/theneighbird"
@@ -336,7 +340,7 @@ const Home = () => {
                 @theneighbird
               </a>
             </div>
-            <div className="flex flex-col ml-16 items-between">
+            <div className="flex flex-col ml-16 items-between tablet:mt-10 tablet:ml-0">
               <div>
                 <p className="text-primaryColor text-3xl">#Codechella Hackathon</p>
                 <p className="text-primaryColor text-3xl">November 18 - 22, 2020</p>
@@ -344,10 +348,10 @@ const Home = () => {
               <p className="text-white text-3xl mt-8">Team Name: Power of 5</p>
             </div>
           </div>
-          <div className="flex justify-around w-full">
+          <div className="flex justify-around w-full flex-wrap">
             {team.map((mate, index) => {
               return (
-                <div className="flex flex-col items-center">
+                <div className="flex flex-col items-center mb-10">
                   <img src={mate.image} className="w-48 mb-9" />
                   {mate.flag}
                   <p className="text-white font-bold text-xl mt-3">{mate.name}</p>
@@ -358,7 +362,7 @@ const Home = () => {
           </div>
         </div>
         <div className="absolute bottom-0 left-0 mb-5 ml-5 flex flex-col reltaive text-white">
-          <a className="flex items-center cursor-pointer" href="#app">
+          <a className="flex items-center cursor-pointer tablet:flex" href="#app">
             Back to App &nbsp;
             <ArrowUpIcon />
           </a>

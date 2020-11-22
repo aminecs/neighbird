@@ -17,7 +17,7 @@
     "country_code": "US",
     "location": [-122.332069, 47.606209],
     "bot_usage_count": 22,
-    "topic": "COVID-19"
+    "topic": "Donald Trump"
   },
   {
     "city": "Toronto",
@@ -27,7 +27,7 @@
     "country_code": "CA",
     "location": [-79.383186, 43.653225],
     "bot_usage_count": 35,
-    "topic": "COVID-19"
+    "topic": "Drake"
   },
   {
     "city": "Lagos",
@@ -37,7 +37,7 @@
     "country_code": "NG",
     "location": [3.379206, 6.524379],
     "bot_usage_count": 30,
-    "topic": "COVID-19"
+    "topic": "Burna Boy vs Wizkid"
   },
   {
     "city": "Portland",
@@ -97,6 +97,114 @@
     "country_code": "US",
     "location": [-84.387985, 33.748997],
     "bot_usage_count": 32,
-    "topic": "COVID-19"
+    "topic": "#BML"
+  },
+  {
+    "city": "Boston",
+    "region": "Massachusetts",
+    "regionCode": "",
+    "country": "US",
+    "location": [-71.058884, 42.360081],
+    "bot_usage_count": 86,
+    "topic": "Celtics"
+  },
+  {
+    "city": "Madrid",
+    "region": "",
+    "regionCode": "",
+    "country": "Spain",
+    "location": [-3.70379, 40.416775],
+    "bot_usage_count": 12,
+    "topic": "Ronaldo"
+  },
+  {
+    "city": "Melbourne",
+    "region": "",
+    "regionCode": "",
+    "country": "Australia",
+    "location": [144.963058, -37.813629],
+    "bot_usage_count": 26,
+    "topic": "Wild Fires"
+  },
+  {
+    "city": "Moscow",
+    "region": "",
+    "regionCode": "",
+    "country": "Russia",
+    "location": [37.617298, 55.755825],
+    "bot_usage_count": 87,
+    "topic": "COVID-19 vaccine"
+  },
+  {
+    "city": "Shanghai",
+    "region": "",
+    "regionCode": "",
+    "country": "China",
+    "location": [121.473701, 31.230391],
+    "bot_usage_count": 126,
+    "topic": "Trade war"
+  },
+  {
+    "city": "Amsterdam",
+    "region": "",
+    "regionCode": "",
+    "country": "Netherlands",
+    "location": [4.895168, 52.370216],
+    "bot_usage_count": 18,
+    "topic": "Snow"
+  },
+  {
+    "city": "Tokyo",
+    "region": "",
+    "regionCode": "",
+    "country": "Japan",
+    "location": [139.691711, 35.689487],
+    "bot_usage_count": 78,
+    "topic": "Naruhito"
+  },
+  {
+    "city": "Delhi",
+    "region": "",
+    "regionCode": "",
+    "country": "India",
+    "location": [77.102493, 28.70406],
+    "bot_usage_count": 56,
+    "topic": "Joe Jonas"
+  },
+  {
+    "city": "São Paulo",
+    "region": "",
+    "regionCode": "",
+    "country": "Brazil",
+    "location": [-46.633308, -23.55052],
+    "bot_usage_count": 45,
+    "topic": "Neymar Jr"
+  },
+  {
+    "city": "Mexico City",
+    "region": "",
+    "regionCode": "",
+    "country": "Mexico",
+    "location": [-99.133209, 19.432608],
+    "bot_usage_count": 67,
+    "topic": "Neymar Jr"
+  },
+  {
+    "city": "Cario",
+    "region": "",
+    "regionCode": "",
+    "country": "Egypt",
+    "location": [31.235712, 30.04442],
+    "bot_usage_count": 32,
+    "topic": "Pyramids"
+  },
+  {
+    "city": "Beijing",
+    "region": "",
+    "regionCode": "",
+    "country": "Chine",
+    "location": [116.407394, 39.904202],
+    "bot_usage_count": 69,
+    "topic": "Democracy"
   }
 ]
