@@ -2,6 +2,9 @@ module.exports = {
   purge: ['./components/**/*.{js,jsx,ts,tsx}', './pages/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
+      colors: {
+        primaryColor: '#1DA1F2',
+      },
       screens: {
         tablet: { max: '800px' },
         // => @media (max-width: 800px) { ... }
