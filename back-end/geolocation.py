@@ -1,10 +1,10 @@
 import requests
 import os
-import urllib.parse
+from dotenv import load_dotenv
 from geopy import distance
+load_dotenv()
 
-MAPBOX_TOKEN = os.environ.get('MAPBOX_TOKEN')
-
+GOOGLE_API_KEY = os.environ.get('GOOGLE_GEOLOCATION_KEY', "")
 
 def distanceBetweenLocations(locA, locB, inMiles):
     """Returns the distance between two locations
@@ -14,7 +14,7 @@ def distanceBetweenLocations(locA, locB, inMiles):
         Has two attributes: (lat, lng)
     locB: tuple
         Has two attributes: (lat, lng)
-    inMiles: str
+    metric: str
         Used either 'mi' or 'km' to get your result in that format.
     Returns
     -------
@@ -34,29 +34,23 @@ def getLocationInfo(location_str):
     ret = {"data": None, "error": None}
 
     try:
-        url_parsed_addr = urllib.parse.quote_plus(location_str)
-        url = "https://api.mapbox.com/geocoding/v5/mapbox.places/{}.json".format(url_parsed_addr)
+        url = "https://maps.googleapis.com/maps/api/geocode/json"
         query_params = {
-            "access_token": MAPBOX_TOKEN,
+            "key": GOOGLE_API_KEY,
+            "address": location_str,
         }
 
-        res = requests.get(url, params=query_params)
+        res = requests.post(url, params=query_params)
         res.raise_for_status()
-
-        locations = res.json()["features"]
-
+        locations = res.json()["results"]
         if not locations:
             ret["error"] = "Location not found"
         else:
-            # API RETURNS [LNG, LAT]
-            # print("Here: \n", locations[0]["context"])
-            ret["data"] = {
-                "formatted_address": locations[0]["place_name"],
-                "city": locations[0]["context"][1]["text"],
-                "country": locations[0]["context"][-1]["text"],
-                "lng": locations[0]["geometry"]["coordinates"][0],
-                "lat": locations[0]["geometry"]["coordinates"][1],
-            }
+            ret["data"]= {
+                "formatted_address": locations[0]["formatted_address"],
+                "lat": locations[0]["geometry"]["location"]["lat"],
+                "lng": locations[0]["geometry"]["location"]["lng"],
+        }
     except ValueError:
         ret["error"] = "Improper JSON response from URL"
     except requests.exceptions.HTTPError as err:
@@ -69,14 +63,12 @@ def getLocationInfo(location_str):
     return ret
 
 
-if __name__ == "__main__":
+if __name__=="__main__":
     """
     To test module functionality
     """
-    addr = "panorama hotel, Victoria Island, Lagos"
-
-    # print(getLocationInfo("7 Jayhawk way, Holmdel"))
-    addr1 = getLocationInfo("panorama hotel, Victoria Island, Lagos")
+    # print(getLocationInfo("gbagada phase 2lagos"))
+    addr1 = getLocationInfo("panorama hotel, Victoria Island")
     addr2 = getLocationInfo("gbagada phase 2, Lagos")
 
     # Test Distance between 2 points
