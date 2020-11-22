@@ -8,12 +8,20 @@ GOOGLE_API_KEY = os.environ.get('GOOGLE_GEOLOCATION_KEY', "")
 
 def distanceBetweenLocations(locA, locB, inMiles):
     """Returns the distance between two locations
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/database
     Parameters
     ----------
     locA: tuple
         Has two attributes: (lat, lng)
     locB: tuple
         Has two attributes: (lat, lng)
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/database
     metric: str
         Used either 'mi' or 'km' to get your result in that format.
     Returns
@@ -28,6 +36,10 @@ def distanceBetweenLocations(locA, locB, inMiles):
 
 def getLocationInfo(location_str):
     """Returns Location information of a given address
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/database
     @input location_str - A string
     @output Object with data & error keys
     """
@@ -78,4 +90,6 @@ if __name__=="__main__":
     locb = (addr2["data"]["lat"], addr2["data"]["lng"])
 
     inMiles = False
+
     print(distanceBetweenLocations(loca, locb, inMiles), "km")
+
