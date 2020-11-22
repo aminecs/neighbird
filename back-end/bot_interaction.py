@@ -1,5 +1,6 @@
 import dm_methods
 import models
+import inquiryv2
 
 """"
     Defining the both answers to specific messages
@@ -111,12 +112,23 @@ def getSender(data):
     return data["direct_message_events"][0]["message_create"]["sender_id"]
 
 
+def checkIfInquiryExists(recipient_user):
+    if not recipient_user.inquiries:
+        return False
+    else:
+        return True
+
+
 def processData(data, inquiry):
     msg_received = getMessageReceived(data)
     recipient_id = getSender(data)
     recipient_user = models.User.find_user(recipient_id)
     new_user = isNewUser(recipient_user)
-    answer, options = processMessage(msg_received, recipient_user, new_user, inquiry)
+    inquiry_exit = checkIfInquiryExists(recipient_user)
+    if inquiry_exit:
+        answer, options = "You already have an inquiry with us.", exist_inquiry_options
+    else:
+        answer, options = processMessage(msg_received, recipient_user, new_user, inquiry)
     recipient_user.set_last_msg(msg_received.lower())
     if answer == "hi":
         dm_methods.send_WelcomeDM(recipient_id)
@@ -251,4 +263,17 @@ trending_topics_options = [
         "description": "I want to submit my own topic",
         "metadata": "external_id_4"
     }
+]
+
+exist_inquiry_options = [
+    {
+        "label": "Keep previous enquiry",
+        "description": "Keep on working on the last request",
+        "metadata": "external_id_1"
+    },
+    {
+        "label": "Drop previous enquiry",
+        "description": "Forget about the last request",
+        "metadata": "external_id_2"
+    },
 ]
