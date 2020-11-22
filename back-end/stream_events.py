@@ -1,5 +1,7 @@
+import bot_interaction
+import json
+
 from twitivity import Event
-import json, bot_interaction
 
 
 class StreamEvent(Event):

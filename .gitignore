@@ -139,3 +139,10 @@ cython_debug/
 
 # pycharm
 .idea
+
+.idea/
+.env
+.vscode
+
+# macOS
+.DS_Store
