@@ -78,6 +78,7 @@ const Home = () => {
     >
       <Head>
         <title>The Neighbird - #Codechella</title>
+        <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico" />
       </Head>
       <div className="flex flex-col items-center w-full h-screen overflow-hidden relative" id="app">
         <div className="flex px-5 py-2 w-full items-center">
@@ -290,7 +291,7 @@ const Home = () => {
             />
           </p>
           <p
-            className="rounded-sm bg-white px-2 text-2xl font-bold mb-2 cursor-pointer"
+            className="rounded-sm bg-white px-2 text-2xl font-bold mb-2 cursor-pointer text-center"
             onClick={() => {
               if (zoom !== 8) setZoom(zoom + 1);
             }}
