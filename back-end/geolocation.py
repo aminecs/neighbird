@@ -5,6 +5,7 @@ from geopy import distance
 
 MAPBOX_TOKEN = os.environ.get('MAPBOX_TOKEN')
 
+
 def distanceBetweenLocations(locA, locB, inMiles):
     """Returns the distance between two locations
     Parameters
@@ -39,7 +40,6 @@ def getLocationInfo(location_str):
             "access_token": MAPBOX_TOKEN,
         }
 
-
         res = requests.get(url, params=query_params)
         res.raise_for_status()
 
@@ -48,15 +48,15 @@ def getLocationInfo(location_str):
         if not locations:
             ret["error"] = "Location not found"
         else:
-            #API RETURNS [LNG, LAT]
-            #print("Here: \n", locations[0]["context"])
+            # API RETURNS [LNG, LAT]
+            # print("Here: \n", locations[0]["context"])
             ret["data"] = {
                 "formatted_address": locations[0]["place_name"],
                 "city": locations[0]["context"][1]["text"],
                 "country": locations[0]["context"][-1]["text"],
                 "lng": locations[0]["geometry"]["coordinates"][0],
                 "lat": locations[0]["geometry"]["coordinates"][1],
-        }
+            }
     except ValueError:
         ret["error"] = "Improper JSON response from URL"
     except requests.exceptions.HTTPError as err:
@@ -69,7 +69,7 @@ def getLocationInfo(location_str):
     return ret
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     """
     To test module functionality
     """

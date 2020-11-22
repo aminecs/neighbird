@@ -1,4 +1,4 @@
-import dm_methods, user
+import dm_methods
 
 """"
     Defining the both answers to specific messages
@@ -6,7 +6,7 @@ import dm_methods, user
 """
 
 
-def processMessage(msg_received, recipient_user):  # TODO Add param: user, new_user
+def processMessage(msg_received, recipient_user, inquiry):  # TODO Add param: user, new_user
     msg_received = msg_received.lower()
     new_user = True
     # Community bit
@@ -18,43 +18,57 @@ def processMessage(msg_received, recipient_user):  # TODO Add param: user, new_u
             return "Welcome back ! Community is a place where you can connect with other Tweeters in your" \
                    "neighbourhood.", community_options
     if msg_received == "why do you need this?":
-        return "Security and trust is at the forefront of what we do here at Twitter. We need to verify that you’re a " \
-               "real user to ensure that we keep the community a safe space for everyone. Your personal details or " \
+        return "Security and trust is at the forefront of what we do here at Twitter. We need to verify that you’re " \
+               "a real user to ensure that we keep the community a safe space for everyone. Your personal details or " \
                "address will not be shared with anyone. Do you want to continue?", security_options
     if msg_received == "share address":
         return "Please enter your address", []
     if msg_received == "abort":
         return "We are sorry to see you go. We wish you the best and I appreciate the time you spent with us.", []
     if msg_received == "chat":
-        return "Hang tight, we’re searching for other birds to chat with...", []
+        inquiry.set_inquiry_type(1)
+        return "Is there something in particular you want to chat about?", chat_options
     if msg_received == "engage":
+        inquiry.set_inquiry_type(2)
         return "What activity would you like to engage in?", []
     if msg_received == "community help":
+        inquiry.set_inquiry_type(3)
         if not recipient_user.available_to_help:
             return "The greatness of a Community is most accurately measured by the compassionate actions " \
                    "of its members. Will you also opt in to respond to community requests?", opt_in_options
         else:
             return "How soon would you like to chat with a fellow Tweeter on your current request?", time_options
     if msg_received == "sign me up":
-        return "Thank you for opting in. How soon would you like to chat with a fellow Tweeter on your current request?", time_options
+        return "Thank you for opting in. How soon would you like to chat with a fellow Tweeter on your current " \
+               "request?", time_options
     if msg_received == "now":
         return "Hang tight, we’re searching for other birds with the same criteria…", []
     if msg_received == "later":
         return "All right, we will get back to you soon.", []
     # Topics bit
     if msg_received == "topics":
-        return "Topics is the space where we can match you with a fellow Tweeter to chat about a specific topic", topic_options
+        inquiry.set_inquiry_type(1)
+        return "Topics is the space where we can match you with a fellow Tweeter to chat about a specific topic" \
+               "", topic_options
     if msg_received == "submit a topic":
         return "What topic are you interested in?", []
     if msg_received == "trending topics":
         return "The trending topics are: " + ', '.join(getTrendingTopics()), trending_topics_options
+    if msg_received in map(lambda x: x.lower(), getTrendingTopics()):
+        inquiry.set_inquiry_str(msg_received)
+        return f"Hang tight, we’re searching for other birds interested in {msg_received}…", []
     # Edge cases
     if msg_received == "hi":
         return "hi", []
+    if msg_received == "ok":
+        return "ok", []
     else:
         if recipient_user.last_msg == "engage":
-            return f"Sounds good, we will try to find someone who wants to engage in this activity ({msg_received}).", []
+            inquiry.set_inquiry_str(msg_received)
+            return f"Sounds good, we will try to find someone who wants to engage in this activity ({msg_received})." \
+                   f"", []
         if recipient_user.last_msg == "submit a topic":
+            inquiry.set_inquiry_str(msg_received)
             return f"Hang tight, we’re searching for other birds interested in {msg_received}…", []
         if recipient_user.last_msg == "share address":
             recipient_user.set_address(msg_received)
@@ -81,13 +95,15 @@ def getSender(data):
     return data["direct_message_events"][0]["message_create"]["sender_id"]
 
 
-def processData(data, recipient_user):
+def processData(data, recipient_user, inquiry):
     msg_received = getMessageReceived(data)
     recipient_id = getSender(data)
-    answer, options = processMessage(msg_received, recipient_user)
+    answer, options = processMessage(msg_received, recipient_user, inquiry)
     recipient_user.set_last_msg(msg_received.lower())
     if answer == "hi":
         dm_methods.send_WelcomeDM(recipient_id)
+    if answer == "ok":
+        dm_methods.send_DM(recipient_id, "cool")
     else:
         if not options:
             dm_methods.send_DM(recipient_id, answer)
@@ -123,6 +139,19 @@ community_options = [
         "label": "Community help",
         "description": "I would like to make a request for help",
         "metadata": "external_id_3"
+    }
+]
+
+chat_options = [
+    {
+        "label": "General chat",
+        "description": "I just want to have a general chat",
+        "metadata": "external_id_1"
+    },
+    {
+        "label": "Submit a topic",
+        "description": "I would like to talk about a topic",
+        "metadata": "external_id_2"
     }
 ]
 
