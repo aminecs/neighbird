@@ -2,6 +2,8 @@ import db as db_
 import geolocation as geo
 import pprint
 from geolocation import distanceBetweenLocations
+from inquiryv2 import InquiryType
+from nlp import NLPAnalyzer
 
 
 class User:
@@ -14,7 +16,8 @@ class User:
         """
         self.user_id = user_id  # (str) user id of Twitter user
         self.inquiries = []  # (list) list of inquiry objects
-        self.location_info = {"data": None, "error": None}  # (dict) typical location information (lon/lat, city, region, country, etc)
+        self.location_info = {"data": None,
+                              "error": None}  # (dict) typical location information (lon/lat, city, region, country, etc)
         self.address = None  # (str) string of original address user gives to bot
         self.available_to_help = False  # (bool) indicates whether this user is available to help with a request from another user
         self.last_msg = None
@@ -157,6 +160,58 @@ class User:
         # sort neighbors based on distance
         return sorted(neighbors)
 
+    def get_user_with_most_similar_inquires(self, count=10, radius=10):
+        """
+        Find other users with most similar inquires to this user based on inquiry string
+        @param count: (int) count of how the number of most similar users should be returned
+        @param radius: (int) radius argument passed to get_closest_users()
+        @return: (list) list of users
+        """
+
+        # get inquiry object for this user
+        my_inquiry = self.inquiries[0]
+
+        # find matches for user with community inquiries
+        users_to_search = []
+        if self.location_info["data"]:
+            user_collection = self.get_closest_users(radius)[:count]
+
+            # search for users from all users based on inquiry type of this user
+            for user in user_collection:
+                other_inquiry = user['inquiries'][0]
+
+                if user['location_info'] is None:
+                    continue
+
+                if my_inquiry.inquiry_type == InquiryType.chat and other_inquiry.inquiry_type == InquiryType.chat:
+                    users_to_search.append(user)
+                elif my_inquiry.inquiry_type == InquiryType.meet_irl and other_inquiry.inquiry_type == InquiryType.meet_irl:
+                    users_to_search.append(user)
+                elif my_inquiry.inquiry_type == InquiryType.request and user['available_to_help']:
+                    users_to_search.append(user)
+
+        # find matches for users with general chat inquiries
+        else:
+            # get all users
+            user_collection = db_.getDB().user
+
+            # search for users from all users based on inquiry type of this user
+            for user in user_collection:
+                other_inquiry = user['inquiries'][0]
+
+                if user['location_info']:
+                    continue
+
+                if my_inquiry.inquiry_type == InquiryType.chat and other_inquiry.inquiry_type == InquiryType.chat:
+                    users_to_search.append(user)
+
+        analyzer = NLPAnalyzer.get_instance()
+
+        # use nlp model to compare inquiry texts
+        most_similar_inquiries = [user['inquiries'][0] for user in users_to_search]
+        most_similar_inquiries = analyzer.sort_by_cosine_and_sentiment_similarity(my_inquiry, most_similar_inquiries)
+        return most_similar_inquiries
+
 
 def seed_users():
     usernames = ["keji_irl__", "trombone", "White House", "Radisson Blu"]
@@ -172,7 +227,7 @@ def seed_users():
 if __name__ == "__main__":
     pp = pprint.PrettyPrinter(indent=4)
 
-    #db_.connect()
+    # db_.connect()
     User.delete_user("1172192131118784514")
     # print(db_.getDB().list_collection_names())
 
@@ -193,5 +248,5 @@ if __name__ == "__main__":
     # user.save()
     # closest = user.get_closest_users(20)
 
-    #pp.pprint(closest)
 
+    # pp.pprint(closest)

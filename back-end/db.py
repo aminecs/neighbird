@@ -11,7 +11,8 @@ def connect():
     global db
     if not db:
         MONGO_ATLAS_URI = os.environ.get("MONGO_ATLAS_URI", "")
-        client = MongoClient(MONGO_ATLAS_URI)
+        # client = MongoClient(MONGO_ATLAS_URI)
+        client = MongoClient("mongodb+srv://birdbot:codechella@cluster0.t03am.mongodb.net/community?retryWrites=true&w=majority")
         db = client["community"] # create a db called community
     if db:
         print("Connected to db")

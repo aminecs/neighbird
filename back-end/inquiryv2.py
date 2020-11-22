@@ -3,6 +3,7 @@ import db as db_
 import geolocation as geo
 import pprint
 from geolocation import distanceBetweenLocations
+from nlp import NLPAnalyzer
 
 
 class InquiryType(IntEnum):
@@ -20,8 +21,6 @@ class Inquiry:
         self.time_limit = None  # (int) time limit in seconds that the inquiry will exist for
         self.matched_user = None  # (User) user class of other user that matches with this inquiry
         self.entities = []
-
-
 
     def save(self):
         """
@@ -59,7 +58,6 @@ class Inquiry:
             inquries.append(Inquiry.dbinq2object(inq))
         return inquries
 
-
     @staticmethod
     def get_inquiry(twitter_id):
         """
@@ -68,7 +66,6 @@ class Inquiry:
         Inquiry_coll = db_.getDB().inquiry
         inq = Inquiry_coll.find_one({"user_id": twitter_id})
         return Inquiry.dbinq2object(inq)
-
 
     @staticmethod
     def dbinq2object(inq):
@@ -82,12 +79,7 @@ class Inquiry:
             inq_obj.time_limit = inq["time_limit"]
             inq_obj.matched_user = inq["matched_user"]
 
-            inq_obj.entities = {
-                "entity": inq["entities"]["entity"],
-                "sentiment_score": inq["entities"]["sentiment_score"],
-                "sentiment_magnitude": inq["entities"]["sentiment_magnitude"],
-                "salience": inq["entities"]["salience"],
-            }
+            inq_obj.entities = inq['entities']
         return inq_obj
 
     @staticmethod
@@ -103,6 +95,10 @@ class Inquiry:
 
     def set_inquiry_str(self, inquiry_str):
         self.inquiry_str = inquiry_str
+
+        analyzer = NLPAnalyzer.get_instance()
+        self.entities = analyzer.get_entity_analysis(inquiry_str)
+
         self.save()
         return self.inquiry_str
 
@@ -110,9 +106,11 @@ class Inquiry:
         self.matched_user = user
 
     def __repr__(self):
-        return "{}, {}, {}, {}, {}".format(self.user_id, self.inquiry_type, self.inquiry_str, self.time_limit, self.matched_user)
+        return "{}, {}, {}, {}, {}".format(self.user_id, self.inquiry_type, self.inquiry_str, self.time_limit,
+                                           self.matched_user)
 
-if __name__=="__main__":
+
+if __name__ == "__main__":
     # print("Testing entities")
     # i1 = Inquiry("123453")
     # i2 = Inquiry("tromgold")

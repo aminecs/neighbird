@@ -125,7 +125,7 @@ if __name__ == "__main__":
     """
     testing out sentiment and cosine similarity
     """
-    from inquiry import Inquiry
+    from inquiryv2 import Inquiry
 
     analyzer = NLPAnalyzer.get_instance()
 
@@ -138,17 +138,20 @@ if __name__ == "__main__":
                        'dogs', 'my eagle',
                        'i liked cooking last night']
 
-    target_inquiry = Inquiry(None, 1, target_inquiry)
-    other_inquiries = [Inquiry(None, 1, oi) for oi in other_inquiries]
+    target_inquiry_obj = Inquiry(None)
+    target_inquiry_obj.set_inquiry_str(target_inquiry)
+    other_inquiries_objs = [Inquiry(None) for oi in other_inquiries]
+    for i, io in enumerate(other_inquiries_objs):
+        io.set_inquiry_str(other_inquiries[i])
 
-    print(f'target inquiry: "{target_inquiry.inquiry_str}", '
-          f'sentiment score={analyzer._sentiment_score(target_inquiry.entities)}, entities: {target_inquiry.entities}')
+    print(f'target inquiry: "{target_inquiry_obj.inquiry_str}", '
+          f'sentiment score={analyzer._sentiment_score(target_inquiry_obj.entities)}, entities: {target_inquiry_obj.entities}')
     print('---------------------------------- sorted by cosine similarity-----------------------------')
-    for i in analyzer.sort_by_cosine_similarity(target_inquiry, other_inquiries):
+    for i in analyzer.sort_by_cosine_similarity(target_inquiry_obj, other_inquiries_objs):
         print(i[0].inquiry_str, i[1])
     print('---------------------------------- sorted by sentiment similarity-----------------------------')
-    for i in analyzer.sort_by_sentiment_similarity(target_inquiry, other_inquiries):
+    for i in analyzer.sort_by_sentiment_similarity(target_inquiry_obj, other_inquiries_objs):
         print(i[0].inquiry_str, i[1], i[0].entities)
     print('------------------------------- sorted by combination of cosine and sentiment ------------------------')
-    for i in analyzer.sort_by_cosine_and_sentiment_similarity(target_inquiry, other_inquiries):
+    for i in analyzer.sort_by_cosine_and_sentiment_similarity(target_inquiry_obj, other_inquiries_objs):
         print(i[0].inquiry_str, i[1])
