@@ -14,7 +14,7 @@ def processMessage(msg_received):  # TODO Add param: user, new_user
     # user.country = "Scotland"
     new_user = True
     user_help = True
-    prev_msg = "engage"
+    user_prev_msg = "engage"
     # Community bit
     if msg_received == "community":
         if new_user:  # New user welcome message for community
@@ -26,13 +26,15 @@ def processMessage(msg_received):  # TODO Add param: user, new_user
     if msg_received == "why do you need this?":
         return "Security and trust is at the forefront of what we do here at Twitter. We need to verify that you’re a " \
                "real user to ensure that we keep the community a safe space for everyone. Your personal details or " \
-               "address will not be shared with anyone. ", []
+               "address will not be shared with anyone. Do you want to continue?", security_options
     if msg_received == "share my address":
         # location = user.city + ", " + user.country  # TO DO: GET CITY OF THE USER
         location = "Glasgow" + ", " + "Scotland"
         return f"Thanks for verifying your address, looks like you are located in {location}. Would you like to " \
                "'chat' with someone from your area, 'engage in an activity' (ie. football, tennis, scrabble) or " \
                "'request help' (ie. toilet paper, grocery shopping, help with homework) ?", community_options
+    if msg_received == "abort":
+        return "We are sorry to see you go. We wish you the best and I appreciate the time you spent with us.", []
     if msg_received == "chat":
         return "Hang tight, we’re searching for other birds to chat with...", []
     if msg_received == "engage":
@@ -59,9 +61,11 @@ def processMessage(msg_received):  # TODO Add param: user, new_user
     # Edge cases
     if msg_received == "hi":
         return "hi", []
-    else:
-        if prev_msg == "engage":
-            return "Sounds good, we will try to find someone who wants to engage in this activity."
+    else: #TODO Replace user_prev_msg to user.prev_msg
+        if user_prev_msg == "engage":
+            return f"Sounds good, we will try to find someone who wants to engage in this activity ({msg_received}).", []
+        if user_prev_msg == "submit a topic":
+            return f"Hang tight, we’re searching for other birds interested in {msg_received}…", []
         return "I am clueless here. The dream team is working on it.", []
 
 
@@ -94,7 +98,7 @@ def processData(data):
 
 address_options = [
     {
-        "label": "Share my address",
+        "label": "Share address",
         "description": "Let us get your address to connect you with your community",
         "metadata": "external_id_1"
     },
@@ -120,6 +124,19 @@ community_options = [
         "label": "Community help",
         "description": "I would like to make a request for help",
         "metadata": "external_id_3"
+    }
+]
+
+security_options = [
+    {
+        "label": "Share address",
+        "description": "Yes, I would like to share my address",
+        "metadata": "external_id_1"
+    },
+    {
+        "label": "Abort",
+        "description": "No, I don't want to share my address",
+        "metadata": "external_id_2"
     }
 ]
 
