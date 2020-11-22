@@ -1,0 +1,102 @@
+[
+  {
+    "city": "New York City",
+    "region": "New York",
+    "regionCode": "NY",
+    "country": "United States of America",
+    "country_code": "US",
+    "location": [-74.005974, 40.712776],
+    "bot_usage_count": 56,
+    "topic": "COVID-19"
+  },
+  {
+    "city": "Seattle ",
+    "region": "Washington",
+    "regionCode": "WA",
+    "country": "United States of America",
+    "country_code": "US",
+    "location": [-122.332069, 47.606209],
+    "bot_usage_count": 22,
+    "topic": "COVID-19"
+  },
+  {
+    "city": "Toronto",
+    "region": "Ontario",
+    "regionCode": "ON",
+    "country": "Canada",
+    "country_code": "CA",
+    "location": [-79.383186, 43.653225],
+    "bot_usage_count": 35,
+    "topic": "COVID-19"
+  },
+  {
+    "city": "Lagos",
+    "region": "Lagos",
+    "regionCode": "",
+    "country": "Nigeria",
+    "country_code": "NG",
+    "location": [3.379206, 6.524379],
+    "bot_usage_count": 30,
+    "topic": "COVID-19"
+  },
+  {
+    "city": "Portland",
+    "region": "Oregon",
+    "regionCode": "OR",
+    "country": "United States of America",
+    "country_code": "US",
+    "location": [-122.658722, 45.51223],
+    "bot_usage_count": 40,
+    "topic": "COVID-19"
+  },
+  {
+    "city": "Oakland",
+    "region": "California",
+    "regionCode": "CA",
+    "country": "United States of America",
+    "country_code": "US",
+    "location": [-122.271111, 37.804363],
+    "bot_usage_count": 12,
+    "topic": "COVID-19"
+  },
+  {
+    "city": "Chesapeake",
+    "region": "Virginia",
+    "regionCode": "VA",
+    "country": "United States of America",
+    "country_code": "US",
+    "location": [-76.287491, 36.768208],
+    "bot_usage_count": 26,
+    "topic": "COVID-19"
+  },
+  {
+    "city": "Jacksonville",
+    "region": "Florida",
+    "regionCode": "FL",
+    "country": "United States of America",
+    "country_code": "US",
+    "location": [-81.655647, 30.332184],
+    "bot_usage_count": 5,
+    "topic": "COVID-19"
+  },
+  {
+    "city": "Akron",
+    "region": "Ohio",
+    "regionCode": "OH",
+    "country": "United States of America",
+    "country_code": "US",
+    "location": [-81.519005, 41.081444],
+    "bot_usage_count": 38,
+    "topic": "COVID-19"
+  },
+  {
+    "city": "Atlanta",
+    "region": "Georgia",
+    "regionCode": "GA",
+    "country": "United States of America",
+    "country_code": "US",
+    "location": [-84.387985, 33.748997],
+    "bot_usage_count": 32,
+    "topic": "COVID-19"
+  }
+]

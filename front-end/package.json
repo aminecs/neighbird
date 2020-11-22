@@ -1,0 +1,23 @@
+{
+  "name": "codechella",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@zeit/next-css": "^1.0.1",
+    "autoprefixer": "^9.8.6",
+    "evergreen-ui": "^5.1.2",
+    "next": "10.0.2",
+    "postcss": "^8.1.8",
+    "react": "17.0.1",
+    "react-dom": "17.0.1",
+    "react-simple-maps": "^2.3.0"
+  },
+  "devDependencies": {
+    "tailwindcss": "^2.0.1"
+  }
+}
