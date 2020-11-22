@@ -63,6 +63,16 @@ class User:
             inserted_user = User_collection.replace_one({"_id": user["_id"]}, new_user)
             print("Replaced user object")
 
+    def addInquiry(self, inquiries):
+        self.inquiries = inquiries
+        self.save()
+        return self.inquiries
+
+    def deleteInquiry(self):
+        self.inquiries == []
+        self.save()
+        return self.inquiries
+
     def set_last_msg(self, last_msg):
         self.last_msg = last_msg
         self.save()

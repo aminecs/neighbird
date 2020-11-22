@@ -67,6 +67,10 @@ class Inquiry:
         """
         Inquiry_coll = db_.getDB().inquiry
         inq = Inquiry_coll.find_one({"user_id": twitter_id})
+        if not inq:
+            inq = Inquiry(twitter_id)
+            inq.save()
+            return inq
         return Inquiry.dbinq2object(inq)
 
 
@@ -82,12 +86,7 @@ class Inquiry:
             inq_obj.time_limit = inq["time_limit"]
             inq_obj.matched_user = inq["matched_user"]
 
-            inq_obj.entities = {
-                "entity": inq["entities"]["entity"],
-                "sentiment_score": inq["entities"]["sentiment_score"],
-                "sentiment_magnitude": inq["entities"]["sentiment_magnitude"],
-                "salience": inq["entities"]["salience"],
-            }
+            inq_obj.entities = inq["entities"]
         return inq_obj
 
     @staticmethod

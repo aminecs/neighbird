@@ -8,6 +8,7 @@ import inquiryv2
 """
 
 
+# TODO GET USER.ADD_INQUIRY TO ACCEPT AN OBJECT OF TYPE INQUIRYV2
 def processMessage(msg_received, recipient_user, new_user, inquiry):  # TODO Add param: user, new_user
     msg_received = msg_received.lower()
     # Community bit
@@ -48,10 +49,13 @@ def processMessage(msg_received, recipient_user, new_user, inquiry):  # TODO Add
         return "No worries. How soon would you like to chat with a fellow Tweeter on your current " \
                "request?", time_options
     if msg_received == "now":
+        recipient_user.addInquiry(inquiry)
         return "Hang tight, we’re searching for other birds with the same criteria…", []
     if msg_received == "later":
+        recipient_user.addInquiry(inquiry)
         return "All right, we will get back to you soon.", []
     if msg_received == "general chat":
+        recipient_user.addInquiry(inquiry)
         return 'Hang tight, we’re searching for other birds to chat with.', []
     # Topics bit
     if msg_received == "topics":
@@ -64,19 +68,26 @@ def processMessage(msg_received, recipient_user, new_user, inquiry):  # TODO Add
         return "The trending topics are: " + ', '.join(getTrendingTopics()), trending_topics_options
     if msg_received in map(lambda x: x.lower(), getTrendingTopics()):
         inquiry.set_inquiry_str(msg_received)
+        recipient_user.addInquiry(inquiry)
         return f"Hang tight, we’re searching for other birds interested in {msg_received}…", []
     # Edge cases
     if msg_received == "hi":
         return "hi", []
     if msg_received == "ok":
         return "ok", []
+    if msg_received == "keep previous enquiry":
+        return "Ok, we will keep on working on your last request.", []
+    if msg_received == "Drop previous enquiry":
+        return "hi", []
     else:
         if recipient_user.last_msg == "engage":
             inquiry.set_inquiry_str(msg_received)
-            return f"Sounds good, we will try to find someone who wants to engage in this activity ({msg_received})." \
+            recipient_user.addInquiry(inquiry)
+            return f"Sounds good, we will try to find someone who wants to engage for this activity ({msg_received})." \
                    f"", []
         if recipient_user.last_msg == "submit a topic":
             inquiry.set_inquiry_str(msg_received)
+            recipient_user.addInquiry(inquiry)
             return f"Hang tight, we’re searching for other birds interested in {msg_received}…", []
         if recipient_user.last_msg == "join the community":
             return "Thank you for joining the community. Your records are stored safely.", []
@@ -113,21 +124,27 @@ def getSender(data):
 
 
 def checkIfInquiryExists(recipient_user):
-    if not recipient_user.inquiries:
-        return False
-    else:
+    if recipient_user.inquiries:
+        print()
         return True
+    else:
+        return False
 
 
-def processData(data, inquiry):
+def processData(data):
     msg_received = getMessageReceived(data)
+
     recipient_id = getSender(data)
     recipient_user = models.User.find_user(recipient_id)
     new_user = isNewUser(recipient_user)
+
     inquiry_exit = checkIfInquiryExists(recipient_user)
+    inquiry = inquiryv2.Inquiry.get_inquiry(recipient_id)
+
     if inquiry_exit:
         answer, options = "You already have an inquiry with us.", exist_inquiry_options
     else:
+        print(inquiry_exit)
         answer, options = processMessage(msg_received, recipient_user, new_user, inquiry)
     recipient_user.set_last_msg(msg_received.lower())
     if answer == "hi":
