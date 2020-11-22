@@ -13,7 +13,7 @@ class StreamEvent(Event):
         if "direct_message_events" == event_type:
             if data["direct_message_events"][0]["message_create"]["sender_id"] != '1328476914600833025':
                 recipient_user.user_id = data["direct_message_events"][0]["message_create"]["sender_id"]
-                bot_interaction.processData(data, recipient_user, inquiry)
+                bot_interaction.processData(data, recipient_user, user_inquiry)
 
 
 stream_events = StreamEvent()

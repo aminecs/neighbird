@@ -8,9 +8,9 @@ class InquiryType(IntEnum):
 
 
 class Inquiry:
-    def __init__(self, user_id, inquiry_type, inquiry_str):
+    def __init__(self, user_id):
         self.user_id = user_id  # (User) user class associated with this inquiry
-        self.inquiry_type = None  # (Enum) type of inquiry, see InquiryType
+        self.inquiry_type = 0  # (Enum) type of inquiry, see InquiryType
         self.inquiry_str = None  # (str) the open-response text the user sent to chat bot describing their inquiry
         self.time_limit = None  # (int) time limit in seconds that the inquiry will exist for
         self.matched_user = None  # (User) user class of other user that matches with this inquiry

@@ -8,7 +8,7 @@ import dm_methods
 
 def processMessage(msg_received, recipient_user, inquiry):  # TODO Add param: user, new_user
     msg_received = msg_received.lower()
-    new_user = True
+    new_user = False
     # Community bit
     if msg_received == "community":
         if new_user:  # New user welcome message for community
@@ -21,7 +21,7 @@ def processMessage(msg_received, recipient_user, inquiry):  # TODO Add param: us
         return "Security and trust is at the forefront of what we do here at Twitter. We need to verify that you’re " \
                "a real user to ensure that we keep the community a safe space for everyone. Your personal details or " \
                "address will not be shared with anyone. Do you want to continue?", security_options
-    if msg_received == "share address":
+    if msg_received == "share address" or msg_received == "join the community":
         return "Please enter your address", []
     if msg_received == "abort":
         return "We are sorry to see you go. We wish you the best and I appreciate the time you spent with us.", []
@@ -39,7 +39,12 @@ def processMessage(msg_received, recipient_user, inquiry):  # TODO Add param: us
         else:
             return "How soon would you like to chat with a fellow Tweeter on your current request?", time_options
     if msg_received == "sign me up":
+        recipient_user.available_to_help = True
         return "Thank you for opting in. How soon would you like to chat with a fellow Tweeter on your current " \
+               "request?", time_options
+    if msg_received == "Don't sign me up":
+        recipient_user.available_to_help = False
+        return "No worries. How soon would you like to chat with a fellow Tweeter on your current " \
                "request?", time_options
     if msg_received == "now":
         return "Hang tight, we’re searching for other birds with the same criteria…", []
@@ -70,6 +75,8 @@ def processMessage(msg_received, recipient_user, inquiry):  # TODO Add param: us
         if recipient_user.last_msg == "submit a topic":
             inquiry.set_inquiry_str(msg_received)
             return f"Hang tight, we’re searching for other birds interested in {msg_received}…", []
+        if recipient_user.last_msg == "join the community":
+            return "Thank you for joining the community. Your records are stored safely.", []
         if recipient_user.last_msg == "share address":
             recipient_user.set_address(msg_received)
             location = recipient_user.location_info["data"]["city"] + ", " + recipient_user.location_info["data"][
@@ -102,7 +109,7 @@ def processData(data, recipient_user, inquiry):
     recipient_user.set_last_msg(msg_received.lower())
     if answer == "hi":
         dm_methods.send_WelcomeDM(recipient_id)
-    if answer == "ok":
+    elif answer == "ok":
         dm_methods.send_DM(recipient_id, "cool")
     else:
         if not options:
@@ -114,7 +121,7 @@ def processData(data, recipient_user, inquiry):
 address_options = [
     {
         "label": "Share address",
-        "description": "Let us get your address to connect you with your community",
+        "description": "Let us get your address to connect you",
         "metadata": "external_id_1"
     },
     {
@@ -127,7 +134,7 @@ address_options = [
 community_options = [
     {
         "label": "Chat",
-        "description": "I would like to chat with someone in my community",
+        "description": "I would like to chat with someone here",
         "metadata": "external_id_1"
     },
     {
@@ -139,6 +146,11 @@ community_options = [
         "label": "Community help",
         "description": "I would like to make a request for help",
         "metadata": "external_id_3"
+    },
+    {
+        "label": "Join the community",
+        "description": "I would like to join the community",
+        "metadata": "external_id_4"
     }
 ]
 

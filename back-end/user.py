@@ -35,12 +35,12 @@ if __name__ == '__main__':
     # Nominatim API can get location data for larger regions of Nigeria but not street addresses
     # print(user.set_address('Lagos, Nigeria'))
 
-    inquiry = inquiry.Inquiry(user=user, inquiry_type=inquiry.InquiryType.chat,
-                              inquiry_str='i want to talk about apples')
-    user.inquiries.append(inquiry)
-    print(user.inquiries)
-    users_inquiry = user.inquiries[0]
-    print(users_inquiry.user.location_info)
-    print(users_inquiry.inquiry_type)
-    print(users_inquiry.inquiry_str)
-    print(users_inquiry.time_limit)
+    # inquiry = inquiry.Inquiry(user=user, inquiry_type=inquiry.InquiryType.chat,
+    #                           inquiry_str='i want to talk about apples')
+    # user.inquiries.append(inquiry)
+    # print(user.inquiries)
+    # users_inquiry = user.inquiries[0]
+    # print(users_inquiry.user.location_info)
+    # print(users_inquiry.inquiry_type)
+    # print(users_inquiry.inquiry_str)
+    # print(users_inquiry.time_limit)
