@@ -14,7 +14,7 @@ class User:
         """
         self.user_id = user_id  # (str) user id of Twitter user
         self.inquiries = []  # (list) list of inquiry objects
-        self.location_info = None  # (dict) typical location information (lon/lat, city, region, country, etc)
+        self.location_info = {"data": None, "error": None}  # (dict) typical location information (lon/lat, city, region, country, etc)
         self.address = None  # (str) string of original address user gives to bot
         self.available_to_help = False  # (bool) indicates whether this user is available to help with a request from another user
         self.last_msg = None
@@ -47,7 +47,6 @@ class User:
             "inquiries": self.inquiries,
 
         }
-        print(self.location_info)
         if self.location_info["data"] is not None:
             new_user["location_info"] = self.location_info["data"]
             new_user["location_data"] = {
@@ -173,7 +172,8 @@ def seed_users():
 if __name__ == "__main__":
     pp = pprint.PrettyPrinter(indent=4)
 
-    db_.connect()
+    #db_.connect()
+    User.delete_user("1172192131118784514")
     # print(db_.getDB().list_collection_names())
 
     # Seeding users
@@ -189,8 +189,9 @@ if __name__ == "__main__":
     # print(user.has_pending_inquiry())
 
     # Testing Closest users
-    user = User.find_user("trombone")
+    # user = User.find_user("trombone")
     # user.save()
-    closest = user.get_closest_users(20)
+    # closest = user.get_closest_users(20)
 
-    pp.pprint(closest)
+    #pp.pprint(closest)
+

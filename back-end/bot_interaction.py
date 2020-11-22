@@ -12,7 +12,7 @@ def processMessage(msg_received, recipient_user, new_user, inquiry):  # TODO Add
     if msg_received == "community":
         if new_user:  # New user welcome message for community
             return "Community is a place where you can connect with other Tweeters in your neighbourhood. " \
-                   "Since it’s your first time here, we’ll need you to share your address ", address_options
+                   "Since it’s your first time here, we’ll need you to share your address.", address_options
         else:
             return "Welcome back ! Community is a place where you can connect with other Tweeters in your" \
                    "neighbourhood.", community_options
@@ -49,11 +49,13 @@ def processMessage(msg_received, recipient_user, new_user, inquiry):  # TODO Add
         return "Hang tight, we’re searching for other birds with the same criteria…", []
     if msg_received == "later":
         return "All right, we will get back to you soon.", []
+    if msg_received == "general chat":
+        return 'Hang tight, we’re searching for other birds to chat with.', []
     # Topics bit
     if msg_received == "topics":
         inquiry.set_inquiry_type(1)
         return "Topics is the space where we can match you with a fellow Tweeter to chat about a specific topic" \
-               "", topic_options
+               ".", topic_options
     if msg_received == "submit a topic":
         return "What topic are you interested in?", []
     if msg_received == "trending topics":
@@ -89,7 +91,7 @@ def processMessage(msg_received, recipient_user, new_user, inquiry):  # TODO Add
 
 
 def isNewUser(recipient_user):
-    if recipient_user.location_info["data"] is None:
+    if recipient_user.location_info is None:
         return True
     else:
         return False
