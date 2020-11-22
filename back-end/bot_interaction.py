@@ -1,4 +1,5 @@
-import dm_methods, models
+import dm_methods
+import models
 
 """"
     Defining the both answers to specific messages
