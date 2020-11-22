@@ -37,3 +37,5 @@ def send_WelcomeDM(recipient_id):
                       json={"event": {"type": "message_create",
                                       "message_create": {"target": {"recipient_id": f"{recipient_id}"},
                                                          "message_data": message_data}}})
+
+# print(send_DM("1172192131118784514", "TEST").text)

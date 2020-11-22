@@ -25,6 +25,9 @@ class User:
         """
         self.address = address
         self.location_info = geo.getLocationInfo(address)
+        print("Here: \n")
+        print(geo.getLocationInfo(address))
+        print("Over.")
         print("Adding address:")
         self.save()
 
@@ -64,12 +67,12 @@ class User:
             print("Replaced user object")
 
     def addInquiry(self, inquiries):
-        self.inquiries = inquiries
+        self.inquiries.append(1)
         self.save()
         return self.inquiries
 
     def deleteInquiry(self):
-        self.inquiries == []
+        self.inquiries = []
         self.save()
         return self.inquiries
 
@@ -183,7 +186,7 @@ if __name__ == "__main__":
     pp = pprint.PrettyPrinter(indent=4)
 
     #db_.connect()
-    User.delete_user("1172192131118784514")
+    #User.delete_user("1172192131118784514")
     # print(db_.getDB().list_collection_names())
 
     # Seeding users
@@ -204,4 +207,6 @@ if __name__ == "__main__":
     # closest = user.get_closest_users(20)
 
     #pp.pprint(closest)
-
+    User.find_user(1172192131118784514).set_address("537 Duke Street, Glasgow, Scotland")
+    print(User.find_user(1172192131118784514).address)
+    print(User.find_user(1172192131118784514).location_info)

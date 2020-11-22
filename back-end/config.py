@@ -25,3 +25,5 @@ def get_api():
     auth.set_access_token(access_token, access_token_secret)
     api = tweepy.API(auth)
     return api
+
+#print(setUpAuth().get("https://api.twitter.com/1.1/users/show.json?user_id=1172192131118784514").json()["screen_name"])

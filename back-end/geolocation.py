@@ -1,19 +1,19 @@
 import requests
 import os
+import urllib.parse
 from geopy import distance
 
-GOOGLE_API_KEY = os.environ.get('GOOGLE_GEOLOCATION_KEY', "")
+MAPBOX_TOKEN = os.environ.get('MAPBOX_TOKEN')
 
 def distanceBetweenLocations(locA, locB, inMiles):
     """Returns the distance between two locations
-
     Parameters
     ----------
     locA: tuple
         Has two attributes: (lat, lng)
     locB: tuple
         Has two attributes: (lat, lng)
-    metric: str
+    inMiles: str
         Used either 'mi' or 'km' to get your result in that format.
     Returns
     -------
@@ -27,29 +27,35 @@ def distanceBetweenLocations(locA, locB, inMiles):
 
 def getLocationInfo(location_str):
     """Returns Location information of a given address
-
     @input location_str - A string
     @output Object with data & error keys
     """
     ret = {"data": None, "error": None}
 
     try:
-        url = "https://maps.googleapis.com/maps/api/geocode/json"
+        url_parsed_addr = urllib.parse.quote_plus(location_str)
+        url = "https://api.mapbox.com/geocoding/v5/mapbox.places/{}.json".format(url_parsed_addr)
         query_params = {
-            "key": GOOGLE_API_KEY,
-            "address": location_str,
+            "access_token": MAPBOX_TOKEN,
         }
 
-        res = requests.post(url, params=query_params)
+
+        res = requests.get(url, params=query_params)
         res.raise_for_status()
-        locations = res.json()["results"]
+
+        locations = res.json()["features"]
+
         if not locations:
             ret["error"] = "Location not found"
         else:
-            ret["data"]= {
-                "formatted_address": locations[0]["formatted_address"],
-                "lat": locations[0]["geometry"]["location"]["lat"],
-                "lng": locations[0]["geometry"]["location"]["lng"],
+            #API RETURNS [LNG, LAT]
+            #print("Here: \n", locations[0]["context"])
+            ret["data"] = {
+                "formatted_address": locations[0]["place_name"],
+                "city": locations[0]["context"][1]["text"],
+                "country": locations[0]["context"][-1]["text"],
+                "lng": locations[0]["geometry"]["coordinates"][0],
+                "lat": locations[0]["geometry"]["coordinates"][1],
         }
     except ValueError:
         ret["error"] = "Improper JSON response from URL"
@@ -65,19 +71,19 @@ def getLocationInfo(location_str):
 
 if __name__=="__main__":
     """
-    To test module functionality
+    # To test module functionality
     """
-    # print(getLocationInfo("gbagada phase 2lagos"))
-    addr1 = getLocationInfo("panorama hotel, Victoria Island")
-    addr2 = getLocationInfo("gbagada phase 2, Lagos")
-
-    # Test Distance between 2 points
-    print(addr1)
-    print(addr2)
-    loca = (addr1["data"]["lat"], addr1["data"]["lng"])
-    locb = (addr2["data"]["lat"], addr2["data"]["lng"])
-
-    inMiles = False
-
-    print(distanceBetweenLocations(loca, locb, inMiles), "km")
-
+    # addr = "panorama hotel, Victoria Island, Lagos"
+    #
+    # # print(getLocationInfo("7 Jayhawk way, Holmdel"))
+    # addr1 = getLocationInfo("panorama hotel, Victoria Island, Lagos")
+    # addr2 = getLocationInfo("gbagada phase 2, Lagos")
+    #
+    # # Test Distance between 2 points
+    # print(addr1)
+    # print(addr2)
+    # loca = (addr1["data"]["lat"], addr1["data"]["lng"])
+    # locb = (addr2["data"]["lat"], addr2["data"]["lng"])
+    #
+    # inMiles = False
+    # print(distanceBetweenLocations(loca, locb, inMiles), "km")

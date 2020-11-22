@@ -1,7 +1,7 @@
 import dm_methods
 import models
 import inquiryv2
-
+import config
 """"
     Defining the both answers to specific messages
 
@@ -9,10 +9,13 @@ import inquiryv2
 
 
 # TODO GET USER.ADD_INQUIRY TO ACCEPT AN OBJECT OF TYPE INQUIRYV2
-def processMessage(msg_received, recipient_user, new_user, inquiry):  # TODO Add param: user, new_user
+def processMessage(msg_received, recipient_user, new_user, inquiry, oauth):  # TODO Add param: user, new_user
     msg_received = msg_received.lower()
+    inquiry_exit = checkIfInquiryExists(recipient_user)
     # Community bit
     if msg_received == "community":
+        if inquiry_exit:
+            return "You already have an inquiry with us.", exist_inquiry_options
         if new_user:  # New user welcome message for community
             return "Community is a place where you can connect with other Tweeters in your neighbourhood. " \
                    "Since it’s your first time here, we’ll need you to share your address.", address_options
@@ -50,7 +53,12 @@ def processMessage(msg_received, recipient_user, new_user, inquiry):  # TODO Add
                "request?", time_options
     if msg_received == "now":
         recipient_user.addInquiry(inquiry)
-        return "Hang tight, we’re searching for other birds with the same criteria…", []
+        close_user = recipient_user.get_closest_users()[0][1].user_id
+        recipient_id = recipient_user.user_id
+        recipient_handle = oauth.get(f"https://api.twitter.com/1.1/users/show.json?user_id={recipient_id}").json()["screen_name"]
+        handle_close = oauth.get(f"https://api.twitter.com/1.1/users/show.json?user_id={close_user}").json()["screen_name"]
+        dm_methods.send_DM(close_user, f"Hi, we find someone who wants to chat {recipient_handle}")
+        return f"Nice we found a match @{handle_close}", []
     if msg_received == "later":
         recipient_user.addInquiry(inquiry)
         return "All right, we will get back to you soon.", []
@@ -59,6 +67,8 @@ def processMessage(msg_received, recipient_user, new_user, inquiry):  # TODO Add
         return 'Hang tight, we’re searching for other birds to chat with.', []
     # Topics bit
     if msg_received == "topics":
+        if inquiry_exit:
+            return "You already have an inquiry with us.", exist_inquiry_options
         inquiry.set_inquiry_type(1)
         return "Topics is the space where we can match you with a fellow Tweeter to chat about a specific topic" \
                ".", topic_options
@@ -77,7 +87,8 @@ def processMessage(msg_received, recipient_user, new_user, inquiry):  # TODO Add
         return "ok", []
     if msg_received == "keep previous enquiry":
         return "Ok, we will keep on working on your last request.", []
-    if msg_received == "Drop previous enquiry":
+    if msg_received == "drop previous enquiry":
+        recipient_user.deleteInquiry()
         return "hi", []
     else:
         if recipient_user.last_msg == "engage":
@@ -90,6 +101,7 @@ def processMessage(msg_received, recipient_user, new_user, inquiry):  # TODO Add
             recipient_user.addInquiry(inquiry)
             return f"Hang tight, we’re searching for other birds interested in {msg_received}…", []
         if recipient_user.last_msg == "join the community":
+            recipient_user.set_address(msg_received)
             return "Thank you for joining the community. Your records are stored safely.", []
         if recipient_user.last_msg == "share address":
             recipient_user.set_address(msg_received)
@@ -125,7 +137,6 @@ def getSender(data):
 
 def checkIfInquiryExists(recipient_user):
     if recipient_user.inquiries:
-        print()
         return True
     else:
         return False
@@ -138,14 +149,9 @@ def processData(data):
     recipient_user = models.User.find_user(recipient_id)
     new_user = isNewUser(recipient_user)
 
-    inquiry_exit = checkIfInquiryExists(recipient_user)
     inquiry = inquiryv2.Inquiry.get_inquiry(recipient_id)
-
-    if inquiry_exit:
-        answer, options = "You already have an inquiry with us.", exist_inquiry_options
-    else:
-        print(inquiry_exit)
-        answer, options = processMessage(msg_received, recipient_user, new_user, inquiry)
+    oauth = config.setUpAuth()
+    answer, options = processMessage(msg_received, recipient_user, new_user, inquiry, oauth)
     recipient_user.set_last_msg(msg_received.lower())
     if answer == "hi":
         dm_methods.send_WelcomeDM(recipient_id)

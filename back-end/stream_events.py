@@ -5,7 +5,7 @@ from twitivity import Event
 
 
 class StreamEvent(Event):
-    CALLBACK_URL: str = "https://29f556047377.ngrok.io/payload"
+    CALLBACK_URL: str = "https://c39615499b6a.ngrok.io/payload"
 
     def on_data(self, data: json) -> None:
         event_type = list(data.keys())[1]
