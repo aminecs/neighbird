@@ -1,4 +1,4 @@
-import dm_methods
+import dm_methods, models
 
 """"
     Defining the both answers to specific messages
@@ -6,9 +6,8 @@ import dm_methods
 """
 
 
-def processMessage(msg_received, recipient_user, inquiry):  # TODO Add param: user, new_user
+def processMessage(msg_received, recipient_user, new_user, inquiry):  # TODO Add param: user, new_user
     msg_received = msg_received.lower()
-    new_user = False
     # Community bit
     if msg_received == "community":
         if new_user:  # New user welcome message for community
@@ -89,6 +88,13 @@ def processMessage(msg_received, recipient_user, inquiry):  # TODO Add param: us
         return "I am clueless here. The dream team is working on it.", []
 
 
+def isNewUser(recipient_user):
+    if recipient_user.location_info["data"] is None:
+        return True
+    else:
+        return False
+
+
 def getTrendingTopics():
     topics = ["Real Madrid", "Codechella", "Beckham"]
     return topics
@@ -102,10 +108,12 @@ def getSender(data):
     return data["direct_message_events"][0]["message_create"]["sender_id"]
 
 
-def processData(data, recipient_user, inquiry):
+def processData(data, inquiry):
     msg_received = getMessageReceived(data)
     recipient_id = getSender(data)
-    answer, options = processMessage(msg_received, recipient_user, inquiry)
+    recipient_user = models.User.find_user(recipient_id)
+    new_user = isNewUser(recipient_user)
+    answer, options = processMessage(msg_received, recipient_user, new_user, inquiry)
     recipient_user.set_last_msg(msg_received.lower())
     if answer == "hi":
         dm_methods.send_WelcomeDM(recipient_id)

@@ -1,6 +1,5 @@
 import os
 from pymongo import MongoClient
-from dotenv import load_dotenv
 from pprint import pprint
 
 db = None
@@ -11,8 +10,6 @@ def connect():
     """
     global db
     if not db:
-        # to parse from the .env file
-        load_dotenv()
         MONGO_ATLAS_URI = os.environ.get("MONGO_ATLAS_URI", "")
         client = MongoClient(MONGO_ATLAS_URI)
         db = client["community"] # create a db called community

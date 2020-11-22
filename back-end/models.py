@@ -3,10 +3,12 @@ import geolocation as geo
 import pprint
 from geolocation import distanceBetweenLocations
 
+
 class User:
     """
     Represents a user of birdbot
     """
+
     def __init__(self, user_id):
         """
         """
@@ -36,24 +38,22 @@ class User:
         User_collection = db_.getDB().user
         user = User_collection.find_one({"user_id": self.user_id})
 
-
         new_user = {
-                "user_id": self.user_id,
-                "location_info": None,
-                "address": self.address,
-                "available_to_help": self.available_to_help,
-                "last_msg": self.last_msg,
-                "inquiries": self.inquiries,
+            "user_id": self.user_id,
+            "location_info": None,
+            "address": self.address,
+            "available_to_help": self.available_to_help,
+            "last_msg": self.last_msg,
+            "inquiries": self.inquiries,
 
-            }
-        if self.location_info:
+        }
+        print(self.location_info)
+        if self.location_info["data"] is not None:
             new_user["location_info"] = self.location_info["data"]
             new_user["location_data"] = {
                 "type": "Point",
                 "coordinates": [self.location_info["data"]["lng"], self.location_info["data"]["lat"]],
             }
-            #
-
 
         if not user:
             print("new user: {}".format(user))
@@ -64,18 +64,14 @@ class User:
             inserted_user = User_collection.replace_one({"_id": user["_id"]}, new_user)
             print("Replaced user object")
 
-
-
-    def set_last_message(self, last_msg):
-        self.last_msg=last_msg
+    def set_last_msg(self, last_msg):
+        self.last_msg = last_msg
         self.save()
         return self.last_msg
 
-
     def __repr__(self):
-        return "{}, {}, {}, {}, {}, {}".format(self.user_id, self.address, self.available_to_help, self.last_msg, self.location_info, self.inquiries)
-
-
+        return "{}, {}, {}, {}, {}, {}".format(self.user_id, self.address, self.available_to_help, self.last_msg,
+                                               self.location_info, self.inquiries)
 
     @staticmethod
     def find_user(twitter_id):
@@ -103,6 +99,22 @@ class User:
         return twitter_user
 
     @staticmethod
+    def get_all_users():
+        # get all users
+        User_collection = db_.getDB().user
+        all_users = User_collection.find()
+        users = []
+        for user in all_users:
+            users.append(User.dbuser2object(user))
+        return users
+
+    @staticmethod
+    def delete_user(twitter_id):
+        User_collection = db_.getDB().user
+        no_deleted = User_collection.delete_one({"user_id": twitter_id})
+        return no_deleted
+
+    @staticmethod
     def dbuser2object(user):
         twitter_user = None
         if user:
@@ -117,7 +129,6 @@ class User:
             twitter_user.last_msg = user["last_msg"]
             twitter_user.inquiries = user["inquiries"]
         return twitter_user
-
 
     def get_closest_users(self, radius=10):
         """
@@ -148,11 +159,10 @@ class User:
         return sorted(neighbors)
 
 
-
-
 def seed_users():
-    usernames = ["keji_irl__","trombone", "White House" , "Radisson Blu"]
-    addresses = ["2 olumoroti jaiyesimi street, Lagos","19b Ogunyemi street, Victoria Island Lagos", "9 Chapel street Yaba, Lagos", "1a Ozumba Mbadiwe Victoria Island Lagos"]
+    usernames = ["keji_irl__", "trombone", "White House", "Radisson Blu"]
+    addresses = ["2 olumoroti jaiyesimi street, Lagos", "19b Ogunyemi street, Victoria Island Lagos",
+                 "9 Chapel street Yaba, Lagos", "1a Ozumba Mbadiwe Victoria Island Lagos"]
 
     for idx in range(len(usernames)):
         user = User(usernames[idx])
@@ -160,12 +170,7 @@ def seed_users():
         user.save()
 
 
-
-
-
-
-
-if __name__=="__main__":
+if __name__ == "__main__":
     pp = pprint.PrettyPrinter(indent=4)
 
     db_.connect()
@@ -189,4 +194,3 @@ if __name__=="__main__":
     closest = user.get_closest_users(20)
 
     pp.pprint(closest)
-

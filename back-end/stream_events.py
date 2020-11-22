@@ -1,7 +1,6 @@
 from twitivity import Event
-import json, bot_interaction, user, inquiry
+import json, bot_interaction, inquiry
 
-recipient_user = user.User("1234")
 user_inquiry = inquiry.Inquiry("1234")
 
 
@@ -12,8 +11,7 @@ class StreamEvent(Event):
         event_type = list(data.keys())[1]
         if "direct_message_events" == event_type:
             if data["direct_message_events"][0]["message_create"]["sender_id"] != '1328476914600833025':
-                recipient_user.user_id = data["direct_message_events"][0]["message_create"]["sender_id"]
-                bot_interaction.processData(data, recipient_user, user_inquiry)
+                bot_interaction.processData(data, user_inquiry)
 
 
 stream_events = StreamEvent()
